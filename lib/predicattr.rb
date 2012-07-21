@@ -10,11 +10,17 @@ module Predicattr
   module ClassMethods
   
     def attr_predicates(*args, &block)
-      args.flatten.each do |p|
-        method_name = :"#{p}?"
+      args.inject([]) do |ary, arg|
+        if arg.is_a?(Hash) || arg.is_a?(Array)
+          ary += arg.to_a
+        else
+          ary << arg
+        end
+      end.each do |arg|
+        predicate, value = arg.is_a?(Array) ? arg : [arg, arg]
         
-        define_method method_name do
-          instance_exec(p, &block)
+        define_method :"#{predicate}?" do
+          instance_exec(value, &block)
         end
       end
     end
