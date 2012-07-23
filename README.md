@@ -1,6 +1,6 @@
 # Predicattr
 
-TODO: Write a gem description
+Predicattr adds inquirer-style predicates to any class.
 
 ## Installation
 
@@ -18,7 +18,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Simply include the Predicattr module in your class then declare some predicates, like so:
+
+    include Predicattr
+
+    attr_predicates "assigned", "fixed", "resolved", "closed" do |s|
+      @state == s # s will be "assigned", "fixed", "resolved",  or "closed"
+    end
+    
+Now your class will respond to the `assigned?`, `fixed?`, `resolved?` and `closed?` methods 
+with the expected behavior.
+
+You can also specify predicate names separately from their values:
+
+    attr_predicates assigned: "A", fixed: "F", resolved: "R", closed: "C" do |s|
+      @one_letter_state == s # s will be "A", "F", "R",  or "C"
+    end
+    
+Or, you can combine the two:
+
+    attr_predicates "assigned", "closed", fixed: "done", resolved: "done" do |s|
+      @one_letter_state == s # s will be "assigned", "closed", or "done"
+    end
+
 
 ## Contributing
 
